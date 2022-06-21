@@ -1,11 +1,15 @@
 import java.io.IOException;
-// import java.util.Scanner;
+import java.util.Scanner;
 
 public class Main {
+    public static void main(String[] args) throws IOException{
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Введите условию задачи: "); String condition = scanner.nextLine();
+        calc(condition);
+    }
+    
+    
     public static String calc(String input) throws IOException{
-
-        //Scanner scanner = new Scanner(System.in);
-        //System.out.println("Введите условию задачи: "); String condition = scanner.nextLine();
 
         String[] conditionArray = input.split(" ");
         int firstNumber = 0;
@@ -29,7 +33,7 @@ public class Main {
             if (conditionArray[0].matches("[0-9]+") && conditionArray[2].matches("[0-9]+")) {
                 firstNumber += Integer.parseInt(conditionArray[0]);
                 secondNumber += Integer.parseInt(conditionArray[2]);
-                System.out.println("Удачное выполнение, арабские числа");
+                
             } else if (conditionArray[0].matches("[IVXLCDM]+") && conditionArray[2].matches("[IVXLCDM]+")) {
                 
                 String firstRimNumber = conditionArray[0];
