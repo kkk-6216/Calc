@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
@@ -7,15 +8,15 @@ public class Main {
         System.out.println("Введите условию задачи: "); String condition = scanner.nextLine();
         calc(condition);
     }
-    
-    
+
+
     public static String calc(String input) throws IOException{
 
         String[] conditionArray = input.split(" ");
         int firstNumber = 0;
         int secondNumber = 0;
         String operator = "";
-
+        boolean isRim = false;
         if (conditionArray.length == 1 || conditionArray.length == 2){
             try{
                 throw new IOException();
@@ -30,12 +31,12 @@ public class Main {
             }
         } else {
             operator += conditionArray[1];
-            if (conditionArray[0].matches("[0-9]+") && conditionArray[2].matches("[0-9]+")) {
+            if (conditionArray[0].matches("-?[0-9]+") && conditionArray[2].matches("-?[0-9]+")) {
                 firstNumber += Integer.parseInt(conditionArray[0]);
                 secondNumber += Integer.parseInt(conditionArray[2]);
-                
+
             } else if (conditionArray[0].matches("[IVXLCDM]+") && conditionArray[2].matches("[IVXLCDM]+")) {
-                
+                isRim = true;
                 String firstRimNumber = conditionArray[0];
                 String secondRimNumber = conditionArray[2];
 
@@ -91,9 +92,30 @@ public class Main {
             case "/" -> result += firstNumber / secondNumber;
         }
 
+        int resultCopy = result;
         // Конвертация число от арабского до римского, ...
 
-        String finalResult = Integer.toString(result);
+        List romanNumerals = LatinNumbers.getReverseSortedValues();
+
+        int i = 0;
+        StringBuilder sb = new StringBuilder();
+
+        while ((result > 0) && (i < romanNumerals.size())) {
+            LatinNumbers currentSymbol = (LatinNumbers) romanNumerals.get(i);
+            if (currentSymbol.getNumber() <= result) {
+                sb.append(currentSymbol.name());
+                result -= currentSymbol.getNumber();
+            } else {
+                i++;
+            }
+        }
+
+        String finalResult = "";
+        if (isRim){
+            finalResult += sb.toString();
+        } else {
+            finalResult += Integer.toString(resultCopy);
+        }
         System.out.println(finalResult);
         return finalResult;
     }
