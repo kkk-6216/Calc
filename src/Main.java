@@ -17,6 +17,7 @@ public class Main {
         int secondNumber = 0;
         String operator = "";
         boolean isRim = false;
+        boolean than = false;
         if (conditionArray.length == 1 || conditionArray.length == 2){
             try{
                 throw new IOException();
@@ -34,6 +35,14 @@ public class Main {
             if (conditionArray[0].matches("-?[0-9]+") && conditionArray[2].matches("-?[0-9]+")) {
                 firstNumber += Integer.parseInt(conditionArray[0]);
                 secondNumber += Integer.parseInt(conditionArray[2]);
+                if ((firstNumber < 1 || firstNumber > 10) || (secondNumber < 1 || secondNumber > 10)){
+                    try{
+                        than = true;
+                        throw new IOException();
+                    }catch (IOException e){
+                        System.out.println("Принимаеться на вход числа от 1 до 10 включительно, не более");
+                    }
+                }
 
             } else if (conditionArray[0].matches("[IVXLCDM]+") && conditionArray[2].matches("[IVXLCDM]+")) {
                 isRim = true;
@@ -74,6 +83,14 @@ public class Main {
                     firstNumber += result1;
                     secondNumber += result2;
                 }
+                if ((result1 < 1 || result1 > 10) || (result2 < 1 || result2 > 10)){
+                    try{
+                        than = true;
+                        throw new IOException();
+                    }catch (IOException e){
+                        System.out.println("Принимаеться на вход числа от 1 до 10 включительно, не более");
+                    }
+                }
 
             } else {
                 try {
@@ -85,12 +102,15 @@ public class Main {
 
         }
         int result = 0;
-        switch (operator) {
-            case "+" -> result += firstNumber + secondNumber;
-            case "-" -> result += firstNumber - secondNumber;
-            case "*" -> result += firstNumber * secondNumber;
-            case "/" -> result += firstNumber / secondNumber;
+        if (!than){
+            switch (operator) {
+                case "+" -> result += firstNumber + secondNumber;
+                case "-" -> result += firstNumber - secondNumber;
+                case "*" -> result += firstNumber * secondNumber;
+                case "/" -> result += firstNumber / secondNumber;
+            }
         }
+
 
         int resultCopy = result;
         // Конвертация число от арабского до римского, ...
@@ -112,7 +132,11 @@ public class Main {
 
         String finalResult = "";
         if (isRim){
-            finalResult += sb.toString();
+            if (resultCopy == 0){
+                throw new IOException();
+            }else {
+                finalResult += sb.toString();
+            }
         } else {
             finalResult += Integer.toString(resultCopy);
         }
